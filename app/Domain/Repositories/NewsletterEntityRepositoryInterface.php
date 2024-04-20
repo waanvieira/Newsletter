@@ -4,8 +4,7 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Entities\UserEntity;
 use Illuminate\Database\Eloquent\Model;
-
-interface UserEntityRepositoryInterface
+interface NewsletterEntityRepositoryInterface
 {
     public function insert(UserEntity $UserEntity): Model;
 
@@ -18,4 +17,6 @@ interface UserEntityRepositoryInterface
     public function update(UserEntity $UserEntity): UserEntity;
 
     public function delete(string $UserEntityId): bool;
+
+    public function RegisterUserOnList(string $idNewLetter, string $idUser): bool;
 }
