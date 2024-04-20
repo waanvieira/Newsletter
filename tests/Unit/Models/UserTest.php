@@ -46,8 +46,8 @@ class UserTest extends TestCase
             'id' => 'string',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_admin' => 'boolean'
-
+            'is_admin' => 'boolean',
+            'deleted_at' => 'datetime'
         ];
     }
 
@@ -84,6 +84,7 @@ class UserTest extends TestCase
             HasFactory::class,
             Notifiable::class,
             \App\Traits\UuidTrait::class,
+            \Illuminate\Database\Eloquent\SoftDeletes::class
         ];
     }
 }

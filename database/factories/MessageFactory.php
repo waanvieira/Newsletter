@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\NewsLetter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
+        $newletter = NewsLetter::factory()->create();
         return [
-            //
+            'newletter_id' => $newletter->id,
+            'title' => fake()->name(),
+            'message' => fake()->text(),
         ];
     }
 }

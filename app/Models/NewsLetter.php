@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NewsLetter extends Model
 {
-    use HasFactory, /*SoftDeletes,*/ UuidTrait;
+    use HasFactory, SoftDeletes, UuidTrait;
 
     public $increment = false;
 

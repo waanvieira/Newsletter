@@ -48,7 +48,7 @@ class NewsLetterTest extends TestCase
             'name' => 'string',
             'description' => 'string',
             'created_at' => 'datetime',
-            // 'deleted_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -84,7 +84,7 @@ class NewsLetterTest extends TestCase
     {
         return [
             \App\Traits\UuidTrait::class,
-            // SoftDeletes::class,
+            SoftDeletes::class,
             HasFactory::class
         ];
     }

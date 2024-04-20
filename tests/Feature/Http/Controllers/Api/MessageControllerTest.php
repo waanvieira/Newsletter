@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\NewLetterController;
+use App\Http\Controllers\Api\MessageController;
+use App\Models\Message;
 use App\Models\NewsLetter;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,7 +15,7 @@ use Tests\Traits\TestValidations;
 
 use function PHPUnit\Framework\assertEquals;
 
-class NewLetterControllerTest extends TestCase
+class MessageControllerTest extends TestCase
 {
     use DatabaseTransactions;
     use TestValidations;
@@ -25,7 +26,7 @@ class NewLetterControllerTest extends TestCase
     private $newletter;
     private $controller;
     private $moduloPagamentoMock;
-    private $paymentMock;
+    private $message;
     private $user;
 
     protected function setUp(): void
@@ -34,18 +35,21 @@ class NewLetterControllerTest extends TestCase
         // $this->withoutMiddleware([
         //     JWTAuthenticateAccess::class
         // ]);
-
         $this->controller = $this->controller();
-        $fakeUser = NewsLetter::factory()->create();
         $user = User::factory()->create();
         $this->user = User::where('email', $user->email)->first();
-        $this->newletter = $this->model()::orderBy('id', 'DESC')->first();
+        NewsLetter::factory()->create();
+        $this->newletter = NewsLetter::orderBy('id', 'DESC')->first();
+        Message::factory()->create();
+        $this->message = $this->model()::orderBy('id', 'DESC')->first();
     }
 
     private $serializedFields = [
         'id',
-        'name',
-        'description',
+        // 'creator_id',
+        'newletter_id',
+        'title',
+        'message',
         'created_at',
         'updated_at'
     ];
@@ -53,16 +57,9 @@ class NewLetterControllerTest extends TestCase
 
     public function testGetAll()
     {
-        $response = $this->get(route('newsletter.index'));
+        $response = $this->get(route('message.index'));
         $response
             ->assertStatus(200)
-            // ->assertJson([
-            //     // 'message' => 'Registros encontrados com sucesso',
-            //     'data' => [
-            //         '*' => $this->serializedFields
-            //     ],
-            //     'per_page' => 20
-            // ]);
             ->assertJsonStructure(
                 [
                     'data' => [
@@ -77,20 +74,22 @@ class NewLetterControllerTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->get(route('newsletter.show', ['newsletter' => $this->newletter->id]));
+        $response = $this->get(route('message.show', ['message' => $this->message->id]));
         $response
-            ->assertStatus(200);
-        // ->assertJsonStructure([
-        //     'data' => $this->serializedFields
-        // ]);
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => $this->serializedFields
+            ]);
     }
 
 
     public function testAssertInvalidationStore()
     {
         $data = [
-            'name' => null,
-            'email' => null
+            // 'creator_id' => null,
+            'newletter_id' => null,
+            'title' => null,
+            'message' => null,
         ];
 
         $this->assertInvalidationInStoreAction($data, 'required', [], $this->routeStore());
@@ -99,8 +98,10 @@ class NewLetterControllerTest extends TestCase
     public function testAssertInvalidationUpdate()
     {
         $data = [
-            'name' => null,
-            'email' => null
+            // 'creator_id' => null,
+            'newletter_id' => null,
+            'title' => null,
+            'message' => null,
         ];
 
         $this->assertInvalidationInUpdateAction($data, 'required', [], $this->routeUpdate());
@@ -113,43 +114,29 @@ class NewLetterControllerTest extends TestCase
 
     public function testStore()
     {
-        $Adminuser = User::factory()->create(['is_admin' => true]);
-        // $this->user = User::where('email', $user->email)->first();
         $data = [
-            'name' => 'teste',
-            "email" => $Adminuser->email,
-            'description' => 'description',
+            // 'creator_id' => $this->user->id,
+            'newletter_id' => $this->newletter->id,
+            'title' => 'titulo teste',
+            'message' => 'mensgem teste para enviar email',
         ];
 
-        $response = $this->assertStore($data, $data, [], route('newsletter.store'));
+        $response = $this->assertStore($data, $data, [], route('message.store'));
         $response
-            ->assertStatus(201);
-        // ->assertJsonStructure([
-        //     'data' => $this->serializedFields
-        // ]);
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => $this->serializedFields
+            ]);
     }
 
-    public function testStoreUserNotAdmin()
-    {
-        $data = [
-            'name' => 'teste',
-            "email" => $this->user->email,
-            'description' => 'description',
-        ];
-
-        $response = $this->post(route('newsletter.store'), $data);
-        $messageExpected = ["message" => "Usuário não tem permissão para criar lista"];
-        $response->assertStatus(Response::HTTP_BAD_REQUEST)->assertContent(
-            json_encode($messageExpected)
-        );
-    }
 
     public function testUpdate()
     {
         $data = [
-            'name' => 'updated',
-            "email" => $this->user->email,
-            'description' => 'updated descript',
+            'creator_id' => $this->user->id,
+            'newletter_id' => $this->newletter->id,
+            'title' => 'titulo teste',
+            'message' => 'mensgem teste para enviar email',
         ];
 
         $response = $this->assertUpdate($data, $data);
@@ -159,32 +146,22 @@ class NewLetterControllerTest extends TestCase
         ]);
     }
 
-    public function testRegisterUserOnTheList()
-    {
-        $data = [
-            "email" => $this->user->email,
-        ];
-        $response = $this->put(route('newsletter.link_user', ['id' => $this->newletter->id]), $data);
-        $response->assertStatus(Response::HTTP_OK);
-        $this->assertHasUser($this->user->id, $this->newletter->id);
-    }
-
     public function testDestroy()
     {
-        $response = $this->json('DELETE', route('newsletter.destroy', ['newsletter' => $this->newletter->id]));
+        $response = $this->json('DELETE', route('message.destroy', ['message' => $this->message->id]));
         $response->assertStatus(204);
-        $userExcluded = $this->model()::where('id', $this->newletter->id)->first();
+        $userExcluded = $this->model()::where('id', $this->message->id)->first();
         $this->assertNull($userExcluded);
     }
 
     public function routeStore()
     {
-        return route('newsletter.store');
+        return route('message.store');
     }
 
     public function routeUpdate()
     {
-        return route('newsletter.update', ['newsletter' => $this->newletter->id]);
+        return route('message.update', ['message' => $this->message->id]);
     }
 
     protected function assertHasUser($userId, $nesLetterId)
@@ -198,11 +175,11 @@ class NewLetterControllerTest extends TestCase
 
     public function model()
     {
-        return NewsLetter::class;
+        return Message::class;
     }
 
     public function controller()
     {
-        return new NewLetterController();
+        return new MessageController();
     }
 }

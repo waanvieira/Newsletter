@@ -3,17 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Domain\User\NewsLetter;
 use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, UuidTrait;
+    use HasApiTokens, HasFactory, Notifiable, UuidTrait, SoftDeletes;
 
     public $increment = false;
 
@@ -49,7 +48,8 @@ class User extends Authenticatable
         'id' => 'string',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_admin' => 'boolean'
+        'is_admin' => 'boolean',
+        'deleted_at' => 'datetime'
     ];
 
     public function newsletters()

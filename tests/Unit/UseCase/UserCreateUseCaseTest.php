@@ -45,7 +45,8 @@ class UserCreateUseCaseTest extends FrameworkTestCase
         $useCase = new UserCreateUseCase($repositoySpy);
         $mockInputDto = Mockery::mock(UserCreateInputDto::class, [$name, $email,$pass]);
         $userResponse =  $useCase->execute($mockInputDto);
-        $repositoySpy->shouldHaveReceived('insert');
+        $res = $repositoySpy->shouldHaveReceived('insert');
+        $this->assertNotNull($res);
         Mockery::close();
     }
 }

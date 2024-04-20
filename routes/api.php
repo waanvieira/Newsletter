@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\NewLetterController;
 use App\Http\Controllers\Api\UserController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('user', UserController::class);
 Route::resource('newsletter', NewLetterController::class);
-Route::prefix('newsletter')->controller(NewLetterController::class)->group(function () {
-    Route::post('link_user/{id}', 'registerUserOnTheList')->name('link_user');
+Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
+    Route::put('link_user/{id}', [NewLetterController::class,'registerUserOnTheList'])->name('link_user');
 });
-
+Route::resource('message', MessageController::class);

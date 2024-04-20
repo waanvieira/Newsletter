@@ -10,9 +10,9 @@ trait UuidTrait
     public static function bootUuidTrait()
     {
         static::creating(function ($model) {
-            if (Schema::hasColumn($model->table, 'creator_id')) {
-                $model->creator_id = auth()->user()->id ?? null;
-            }
+            // if (Schema::hasColumn($model->table, 'creator_id')) {
+            //     $model->creator_id = auth()->user()->id ?? null;
+            // }
             $model->id = Uuid::uuid4()->toString();
         });
     }

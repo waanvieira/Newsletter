@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id')->nullable(true);
+            // $table->uuid('creator_id');
             $table->uuid('newletter_id')->index();
             $table->foreign('newletter_id')->references('id')->on('news_letters');
-            $table->unique(['user_id', 'newletter_id']);
-            $table->string('tittle');
+            $table->string('title');
             $table->text('message');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

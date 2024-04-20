@@ -16,15 +16,6 @@ use Illuminate\Http\Response;
 
 class NewLetterController extends Controller
 {
-    protected $useCase;
-
-    public function __construct(
-        // NewsLetterGetAllUseCase $useCase
-    )
-    {
-        // $this->useCase = $useCase;
-    }
-
     public function index(Request $request, NewLetterGetAllUseCase $useCase)
     {
         $response = $useCase->execute($request->all());
@@ -64,6 +55,5 @@ class NewLetterController extends Controller
 
     public function listUserByList(string $id)
     {
-
     }
 }
