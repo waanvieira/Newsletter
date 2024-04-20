@@ -22,4 +22,5 @@ interface UserEntityRepositoryInterface
     public function update(UserEntity $UserEntity): UserEntity;
 
     public function delete(string $UserEntityId): bool;
+    public function findByEmail(string $email);
 }

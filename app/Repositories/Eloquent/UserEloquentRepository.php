@@ -122,4 +122,14 @@ class UserEloquentRepository implements UserEntityRepositoryInterface
             createdAt: $model->created_at
         );
     }
+
+    public function findByEmail(string $email)
+    {
+        $user = $this->model->where('email', $email)->first();
+        if (!$user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+
+        return $user;
+    }
 }

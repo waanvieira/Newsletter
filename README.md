@@ -10,9 +10,15 @@
 
 ## Como rodar o projeto
 
+Copiar o arquivo .env-example a pasta raiz e renomea-lo para .env
+
 Criar uma rede docker 
 
 docker network create newsletter-network
+
+Dar permissão ao mysql
+
+docker-compose exec app-mysql chown -R mysql:mysql .
 
 Depois da rede criada rodar o comando
 

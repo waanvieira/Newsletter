@@ -4,12 +4,16 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\NewLetterController;
 use App\Models\NewsLetter;
+use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Tests\Traits\TestResources;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
+
+use function PHPUnit\Framework\assertEquals;
 
 class NewLetterControllerTest extends TestCase
 {
@@ -45,11 +49,7 @@ class NewLetterControllerTest extends TestCase
         'updated_at'
     ];
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
+
     public function testGetAll()
     {
         $response = $this->get(route('newsletter.index'));
@@ -73,11 +73,7 @@ class NewLetterControllerTest extends TestCase
             );
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
+
     public function testShow()
     {
         $response = $this->get(route('newsletter.show', ['newsletter' => $this->newletter->id]));
@@ -88,11 +84,7 @@ class NewLetterControllerTest extends TestCase
         // ]);
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
+
     public function testAssertInvalidationStore()
     {
         $data = [
@@ -102,11 +94,6 @@ class NewLetterControllerTest extends TestCase
         $this->assertInvalidationInStoreAction($data, 'required', [], $this->routeStore());
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
     public function testAssertInvalidationUpdate()
     {
         $data = [
@@ -121,15 +108,11 @@ class NewLetterControllerTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
     public function testStore()
     {
         $data = [
             'name' => 'teste',
+            "email" => "useradmin@dev.com",
             'description' => 'description',
         ];
 
@@ -141,11 +124,24 @@ class NewLetterControllerTest extends TestCase
         // ]);
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
+    public function testStoreUserNotAdmin()
+    {
+        $user = User::factory()->create();
+        $data = [
+            'name' => 'teste',
+            "email" => $user->email,
+            'description' => 'description',
+        ];
+
+        $response = $this->post(route('newsletter.store'), $data);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $messageExpected = ["message" => "Usuário não tem permissão para criar lista"];
+        $response->assertContent(
+            json_encode($messageExpected)
+        );
+    }
+
+
     public function testUpdate()
     {
         $data = [
@@ -160,11 +156,6 @@ class NewLetterControllerTest extends TestCase
         ]);
     }
 
-    /**
-     *
-     * @group FechamentoCaixa
-     * @return void
-     */
     public function testDestroy()
     {
         $response = $this->json('DELETE', route('newsletter.destroy', ['newsletter' => $this->newletter->id]));

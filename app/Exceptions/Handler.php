@@ -36,6 +36,11 @@ class Handler extends ExceptionHandler
             throw new NotFoundException($e->getMessage() ?? 'Registro não encontrado');
         }
 
+        if ($e instanceof BadRequestException) {
+            return response()->json(['message' => $e->getMessage(), 404]);
+            // throw new BadRequestException($e->getMessage() ?? 'Erro na requisição');
+        }
+
         parent::report($e);
     }
 
