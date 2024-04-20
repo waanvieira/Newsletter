@@ -25,6 +25,7 @@ class NewLetterRequest extends FormRequest
             case 'PUT':
                 return [
                     'name' => 'required',
+                    'email' => 'required'
                 ];
         }
     }

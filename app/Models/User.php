@@ -52,8 +52,8 @@ class User extends Authenticatable
         'is_admin' => 'boolean'
     ];
 
-    public function newsletter()
+    public function newsletters()
     {
-        return $this->belongsTo(NewsLetter::class);
+        return $this->belongsToMany(User::class, "newletter_user", "newletter_id", "user_id");
     }
 }

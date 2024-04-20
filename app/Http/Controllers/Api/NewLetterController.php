@@ -9,6 +9,7 @@ use App\UseCases\NewLetter\NewLetterDeleteUseCase;
 use App\UseCases\NewLetter\NewLetterFindByIdUseCase;
 use App\UseCases\NewLetter\NewLetterGetAllUseCase;
 use App\UseCases\NewLetter\NewLetterUpdateUseCase;
+use App\UseCases\NewLetter\RegisterUserOnListUseCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
@@ -19,7 +20,7 @@ class NewLetterController extends Controller
 
     public function __construct(
         // NewsLetterGetAllUseCase $useCase
-        )
+    )
     {
         // $this->useCase = $useCase;
     }
@@ -52,5 +53,17 @@ class NewLetterController extends Controller
     {
         $useCase->execute($id);
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function registerUserOnTheList(Request $request, string $idNewsLetter, RegisterUserOnListUseCase $useCase)
+    {
+        $request->validate(['email' => 'required']);
+        $useCase->execute($request->all(), $idNewsLetter);
+        return response()->json([], Response::HTTP_OK);
+    }
+
+    public function listUserByList(string $id)
+    {
+
     }
 }

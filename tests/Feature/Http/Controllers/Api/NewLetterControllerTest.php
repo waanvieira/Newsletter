@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Http\Controllers\Api\NewLetterController;
 use App\Models\NewsLetter;
 use App\Models\User;
-use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -27,7 +26,7 @@ class NewLetterControllerTest extends TestCase
     private $controller;
     private $moduloPagamentoMock;
     private $paymentMock;
-    private $cartaoMock;
+    private $user;
 
     protected function setUp(): void
     {
@@ -38,6 +37,8 @@ class NewLetterControllerTest extends TestCase
 
         $this->controller = $this->controller();
         $fakeUser = NewsLetter::factory()->create();
+        $user = User::factory()->create();
+        $this->user = User::where('email', $user->email)->first();
         $this->newletter = $this->model()::orderBy('id', 'DESC')->first();
     }
 
@@ -88,7 +89,8 @@ class NewLetterControllerTest extends TestCase
     public function testAssertInvalidationStore()
     {
         $data = [
-            'name'     => null
+            'name' => null,
+            'email' => null
         ];
 
         $this->assertInvalidationInStoreAction($data, 'required', [], $this->routeStore());
@@ -97,7 +99,8 @@ class NewLetterControllerTest extends TestCase
     public function testAssertInvalidationUpdate()
     {
         $data = [
-            'name'     => null
+            'name' => null,
+            'email' => null
         ];
 
         $this->assertInvalidationInUpdateAction($data, 'required', [], $this->routeUpdate());
@@ -126,26 +129,24 @@ class NewLetterControllerTest extends TestCase
 
     public function testStoreUserNotAdmin()
     {
-        $user = User::factory()->create();
         $data = [
             'name' => 'teste',
-            "email" => $user->email,
+            "email" => $this->user->email,
             'description' => 'description',
         ];
 
         $response = $this->post(route('newsletter.store'), $data);
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $messageExpected = ["message" => "Usuário não tem permissão para criar lista"];
-        $response->assertContent(
+        $response->assertStatus(Response::HTTP_BAD_REQUEST)->assertContent(
             json_encode($messageExpected)
         );
     }
-
 
     public function testUpdate()
     {
         $data = [
             'name' => 'updated',
+            "email" => $this->user->email,
             'description' => 'updated descript',
         ];
 
@@ -156,6 +157,16 @@ class NewLetterControllerTest extends TestCase
         ]);
     }
 
+    public function testRegisterUserOnTheList()
+    {
+        $data = [
+            "email" => $this->user->email,
+        ];
+        $response = $this->post(route('link_user', ['id' => $this->newletter->id]), $data);
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertHasUser($this->user->id, $this->newletter->id);
+    }
+
     public function testDestroy()
     {
         $response = $this->json('DELETE', route('newsletter.destroy', ['newsletter' => $this->newletter->id]));
@@ -163,7 +174,6 @@ class NewLetterControllerTest extends TestCase
         $userExcluded = $this->model()::where('id', $this->newletter->id)->first();
         $this->assertNull($userExcluded);
     }
-
 
     public function routeStore()
     {
@@ -174,6 +184,15 @@ class NewLetterControllerTest extends TestCase
     {
         return route('newsletter.update', ['newsletter' => $this->newletter->id]);
     }
+
+    protected function assertHasUser($userId, $nesLetterId)
+    {
+        $this->assertDatabaseHas('newletter_user', [
+            'user_id' => $userId,
+            'newletter_id' => $nesLetterId
+        ]);
+    }
+
 
     public function model()
     {

@@ -23,4 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('user', UserController::class);
 Route::resource('newsletter', NewLetterController::class);
+Route::prefix('newsletter')->controller(NewLetterController::class)->group(function () {
+    Route::post('link_user/{id}', 'registerUserOnTheList')->name('link_user');
+});
 

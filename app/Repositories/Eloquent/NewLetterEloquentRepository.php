@@ -14,8 +14,14 @@ class NewLetterEloquentRepository extends AbstractBaseCrudRepository
         $this->model = $model;
     }
 
-    public function model() : Model
+    public function model(): Model
     {
         return $this->model;
+    }
+
+    public function registerUserOnList(string $idNewLetter, string $idUser)
+    {
+        $newLetter = $this->findById($idNewLetter);
+        return $newLetter->users()->sync([$idUser]);
     }
 }

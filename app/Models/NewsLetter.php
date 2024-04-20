@@ -26,11 +26,15 @@ class NewsLetter extends Model
         'name' => 'string',
         'description' => 'string',
         'created_at' => 'datetime',
-        // 'deleted_at' => 'datetime',
     ];
 
     public function messages()
     {
         // return $this->belongsToMany(Video::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, "newletter_user", "newletter_id", "user_id");
     }
 }

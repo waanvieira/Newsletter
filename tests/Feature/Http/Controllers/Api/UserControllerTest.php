@@ -78,19 +78,12 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('user.index'));
         $response
             ->assertStatus(200)
-            // ->assertJson([
-            //     // 'message' => 'Registros encontrados com sucesso',
-            //     'data' => [
-            //         '*' => $this->serializedFields
-            //     ],
-            //     'per_page' => 20
-            // ]);
-            ->assertJsonStructure([
+            ->assertJsonStructure(
+                [
                     'data' => [
                         '*' => $this->serializedFields
                     ],
                     'links' => [],
-                    // 'meta' => [],
                 ]
             );
     }
@@ -105,9 +98,9 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('user.show', ['user' => $this->user->id]));
         $response
             ->assertStatus(200);
-            // ->assertJsonStructure([
-            //     'data' => $this->serializedFields
-            // ]);
+        // ->assertJsonStructure([
+        //     'data' => $this->serializedFields
+        // ]);
     }
 
     /**
