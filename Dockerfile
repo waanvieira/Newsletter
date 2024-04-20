@@ -1,4 +1,3 @@
-# FROM php:7.3.6-fpm-alpine3.9
 FROM php:8.1-fpm-alpine3.19
 RUN apk add --no-cache openssl bash mysql-client nodejs npm alpine-sdk autoconf librdkafka-dev vim nginx openrc
 RUN mkdir -p /run/nginx && \
@@ -9,6 +8,13 @@ RUN pecl install rdkafka
 
 RUN ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
     echo "extension=rdkafka.so" >> /usr/local/etc/php/php.ini
+
+#  Add following lines to php docker file
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
+RUN echo "xdebug.coverage_enable" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 WORKDIR /var/www
 
