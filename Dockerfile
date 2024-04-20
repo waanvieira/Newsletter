@@ -23,17 +23,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 #Copiando a pasta toda para a var/www
 # COPY . .
 
-#Copiando o entrypoint para a pasta /var/www
-COPY .docker/entrypoint.sh /var/www/entrypoint.sh
+#Copiando o entrypoint para a pasta /
+COPY .docker/entrypoint.sh /entrypoint.sh
 
 #Dando permissão máxima para o usuário na pasta storage
-RUN chmod -R 777 /var/www/storage/
+# RUN chmod -R 777 /storage
 
 EXPOSE 9000
 
-RUN chmod +x .docker/entrypoint.sh
-
-RUN chmod +x /var/www/entrypoint.sh
-
-# ENTRYPOINT [ "/var/www/", "entrypoint.sh" ]
-# ENTRYPOINT [ ".docker" , "entrypoint.sh"]
+# RUN chmod +x .entrypoint.sh
