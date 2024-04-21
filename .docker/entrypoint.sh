@@ -8,6 +8,6 @@ php artisan migrate
 php artisan storage:link
 php artisan db:seed
 npm install
-npm run dev
+# npm run dev
 
-php-fpm
+# php-fpm

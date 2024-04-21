@@ -125,11 +125,6 @@ class UserEloquentRepository implements UserEntityRepositoryInterface
 
     public function findByEmail(string $email)
     {
-        $user = $this->model->where('email', $email)->first();
-        if (!$user) {
-            throw new NotFoundException('Usuário não encontrado');
-        }
-
-        return $user;
+        return $this->model->where('email', $email)->first();
     }
 }

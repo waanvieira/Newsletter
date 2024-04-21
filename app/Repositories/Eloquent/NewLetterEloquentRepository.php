@@ -22,6 +22,8 @@ class NewLetterEloquentRepository extends AbstractBaseCrudRepository
     public function registerUserOnList(string $idNewLetter, string $idUser)
     {
         $newLetter = $this->findById($idNewLetter);
-        return $newLetter->users()->sync([$idUser]);
+        if (!$newLetter->users->where('id', $idUser)->first()) {
+            return $newLetter->users()->attach($idUser);
+        }
     }
 }

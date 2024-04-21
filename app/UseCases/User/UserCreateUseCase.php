@@ -6,6 +6,7 @@ namespace App\UseCases\User;
 
 use App\Domain\Entities\UserEntity;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
+use App\Exceptions\BadRequestException;
 use App\UseCases\DTO\User\UserCreateInputDto;
 use App\UseCases\DTO\User\UserCreateOutputDto;
 
@@ -20,12 +21,18 @@ class UserCreateUseCase
 
     public function execute(UserCreateInputDto $input) : UserCreateOutputDto
     {
+
         $userEntity = new UserEntity(
             '',
             name: $input->name,
             email:$input->email,
             password: $input->password
         );
+
+        $varifyEmail = $this->repository->findByEmail($input->email);
+        if ($varifyEmail) {
+            throw new BadRequestException('E-mail cadastrado , não é possível cadastrar E-mail já cadastrado');
+        }
 
         $user = $this->repository->insert($userEntity);
 

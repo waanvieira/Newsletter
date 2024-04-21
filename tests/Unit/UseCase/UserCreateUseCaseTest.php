@@ -18,9 +18,10 @@ class UserCreateUseCaseTest extends FrameworkTestCase
     {
         $name = 'usuario teste';
         $email = 'email@dev.com.br';
-        $pass = 'email@dev.com.br';
+        $pass = '*****';
         $modelEntity = Mockery::mock(UserEntity::class, ['', $name, $email, $pass]);
         $repositoyMock = Mockery::mock(stdClass::class, UserEntityRepositoryInterface::class);
+        $repositoyMock->shouldReceive('findByEmail')->andReturn(null);
         $repositoyMock->shouldReceive('insert')->andReturn($modelEntity);
         $useCase = new UserCreateUseCase($repositoyMock);
         $mockInputDto = Mockery::mock(UserCreateInputDto::class, [$name, $email, $pass]);

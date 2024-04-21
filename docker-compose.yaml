@@ -3,8 +3,7 @@ services:
   app:
     build: .
     container_name: app
-    # entrypoint: "./.docker/entrypoint.sh"
-    # entrypoint: php artisan migrate
+    entrypoint: "sh .entrypoint.sh"
     volumes:
       - ./:/var/www
     depends_on:

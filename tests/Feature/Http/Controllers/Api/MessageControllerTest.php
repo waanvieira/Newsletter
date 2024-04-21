@@ -114,6 +114,12 @@ class MessageControllerTest extends TestCase
 
     public function testStore()
     {
+        $users = User::factory()->count(10)->create();
+        foreach ($users as $user) {
+            $useremail = User::where('email', $user->email)->first();
+            $this->newletter->users()->attach([$useremail->id]);
+        }
+
         $data = [
             // 'creator_id' => $this->user->id,
             'newletter_id' => $this->newletter->id,

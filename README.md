@@ -16,10 +16,6 @@ Criar uma rede docker
 
 docker network create newsletter-network
 
-Dar permissão ao mysql
-
-docker-compose exec app-mysql chown -R mysql:mysql .
-
 Depois da rede criada rodar o comando
 
 docker-compose up -d
@@ -28,25 +24,21 @@ Acessar
 
 http://localhost:9003/
 
-Entrar no container
+Usuário admin padrão
 
-docker-compose exec app bash
-
-rodar o entrypoint
-
-./entrypoint.sh
-
-Rodar a seed
-
-php artisan db:seed
+email: useradmin@dev.com
 
 Rodar teste do PHPUNIT
 
-vendor/bin/phpunit
+docker-compose exec app php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover='reports/coverage/coverage.xml' --coverage-html='reports/coverage'
 
 Rodar teste do Laravel
 
 php artisan test
 
-## Extensões
+## Libs usadas
+
+Lib RabbitMQ
+
+https://github.com/php-amqplib/php-amqplib
 
