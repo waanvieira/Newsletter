@@ -22,7 +22,7 @@ RUN echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.log=/var/www/html/xdebug/xdebug.log" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini
+    && echo "xdebug.client_port=9008" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 WORKDIR /var/www
 
@@ -36,6 +36,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 #Copiando o entrypoint para a pasta /
 COPY .docker/entrypoint.sh /entrypoint.sh
 
-RUN chmod -R 777 /entrypoint.sh
+# RUN chmod -R 777 /entrypoint.sh
 
 EXPOSE 9000
+CMD ["sh" ".entrypoint.sh"]

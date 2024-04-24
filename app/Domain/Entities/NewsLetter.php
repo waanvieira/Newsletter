@@ -1,38 +1,44 @@
 <?php
 
-namespace App\Domain\Entities;
-
 declare(strict_types=1);
 
-namespace App\Domain\User;
+namespace App\Domain\Entities;
 
 use App\Traits\MethodsMagicsTrait;
 use DateTimeImmutable;
+use Ramsey\Uuid\Uuid;
 
 class NewsLetter
 {
     use MethodsMagicsTrait;
 
-    // public readonly string $prop;
-    public function __construct(
-        protected ?string $id = '',
-        protected string $name = '',
-        protected string $mensagem  = '',
+    private function __construct(
+        protected ?string $id,
+        protected string $name,
+        protected string $description,
+        protected string $createdAt = '',
     ) {
-        if (!$this->id) {
-            $this->id = Uuid::uuid4()->toString();
-            // $this->isAdmin = false;
-        }
     }
 
-    public static function create(?int $id, string $name, string $email, $password): self
+    public static function create(string $name, string $description): self
+    {
+        $id = Uuid::uuid4()->toString();
+        $dateNow = date('Y-m-d H:m:s');
+        return new self(
+            id: $id,
+            name: $name,
+            description: $description,
+            createdAt: $dateNow
+        );
+    }
+
+    public static function restore(?string $id, string $name, string $description, string $createdAt = ''): self
     {
         return new self(
             id: $id,
             name: $name,
-            email: $email,
-            password: $password,
-            createdAt: new DateTimeImmutable('2023-09-09 00:15:00'),
+            description: $description,
+            createdAt: $createdAt
         );
     }
 
@@ -40,8 +46,8 @@ class NewsLetter
     {
         return [
             'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
+            'description' => $this->description,
+            'createdAt' => $this->createdAt,
         ];
     }
 
@@ -51,15 +57,14 @@ class NewsLetter
         return new self(
             id: $data['id'],
             name: $data['name'],
-            email: $data['email'],
-            password: null,
-            createdAt: null,
+            description: $data['description'],
+            // createdAt: null,
         );
     }
 
-    public function update(string $name, string $mensagem) : void
+    public function update(string $name, string $description): void
     {
         $this->name = $name;
-        $this->mensagem = $mensagem;
+        $this->description = $description;
     }
 }

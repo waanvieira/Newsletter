@@ -6,7 +6,6 @@ use App\Domain\Entities\UserEntity;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Exceptions\NotFoundException;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
 class UserEloquentRepository implements UserEntityRepositoryInterface
 {
@@ -24,7 +23,6 @@ class UserEloquentRepository implements UserEntityRepositoryInterface
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
-            // 'created_at' => $user->createdAt,
         ]);
 
         return $this->convertToEntity($dataDb);

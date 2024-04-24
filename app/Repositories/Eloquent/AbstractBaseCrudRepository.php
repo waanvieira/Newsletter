@@ -5,7 +5,6 @@ namespace App\Repositories\Eloquent;
 use App\Domain\Repositories\BaseCrudInterface;
 use Illuminate\Database\Eloquent\Model;
 
-
 abstract class AbstractBaseCrudRepository implements BaseCrudInterface
 {
     protected $model;

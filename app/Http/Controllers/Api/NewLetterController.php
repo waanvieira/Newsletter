@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewLetterRequest;
+use App\UseCases\DTO\NewsLetter\NewsLetterCreateInputDto;
+use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
 use App\UseCases\NewLetter\NewLetterCreateUseCase;
 use App\UseCases\NewLetter\NewLetterDeleteUseCase;
 use App\UseCases\NewLetter\NewLetterFindByIdUseCase;
@@ -11,7 +13,6 @@ use App\UseCases\NewLetter\NewLetterGetAllUseCase;
 use App\UseCases\NewLetter\NewLetterUpdateUseCase;
 use App\UseCases\NewLetter\RegisterUserOnListUseCase;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
 class NewLetterController extends Controller
@@ -24,7 +25,12 @@ class NewLetterController extends Controller
 
     public function store(NewLetterRequest $request, NewLetterCreateUseCase $useCase)
     {
-        $response = $useCase->execute($request->all());
+        $inputDto = new NewsLetterCreateInputDto(
+            $request->name,
+            $request->description,
+            $request->email
+        );
+        $response = $useCase->execute($inputDto);
         return response()->json(['data' => $response], Response::HTTP_CREATED);
     }
 
@@ -36,7 +42,13 @@ class NewLetterController extends Controller
 
     public function update(NewLetterRequest $request, string $id, NewLetterUpdateUseCase $useCase)
     {
-        $response = $useCase->execute($request->all(), $id);
+        $inputDto = new NewsLetterUpdateInputDto(
+            $id,
+            $request->name,
+            $request->description,
+            $request->email
+        );
+        $response = $useCase->execute($inputDto, $id);
         return response()->json(['data' => $response], Response::HTTP_OK);
     }
 
@@ -51,9 +63,5 @@ class NewLetterController extends Controller
         $request->validate(['email' => 'required']);
         $useCase->execute($request->all(), $idNewsLetter);
         return response()->json([], Response::HTTP_OK);
-    }
-
-    public function listUserByList(string $id)
-    {
     }
 }

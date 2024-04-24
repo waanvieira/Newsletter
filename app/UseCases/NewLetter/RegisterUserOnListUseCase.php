@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\UseCases\NewLetter;
 
+use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Exceptions\BadRequestException;
-use App\Repositories\Eloquent\NewLetterEloquentRepository;
-use Illuminate\Database\Eloquent\Model;
 
 class RegisterUserOnListUseCase
 {
@@ -15,7 +14,7 @@ class RegisterUserOnListUseCase
     protected $userRepository;
 
     public function __construct(
-        NewLetterEloquentRepository $repository,
+        NewsletterEntityRepositoryInterface $repository,
         UserEntityRepositoryInterface $userRepository
         )
     {

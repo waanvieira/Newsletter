@@ -146,9 +146,10 @@ class NewLetterControllerTest extends TestCase
 
     public function testUpdate()
     {
+        $Adminuser = User::factory()->create(['is_admin' => true]);
         $data = [
             'name' => 'updated',
-            "email" => $this->user->email,
+            "email" => $Adminuser->email,
             'description' => 'updated descript',
         ];
 
