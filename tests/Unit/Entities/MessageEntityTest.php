@@ -59,11 +59,11 @@ class MessageEntityTest extends TestCase
             createdAt: ''
         );
 
-        $updatedNewLetterId = $this->newsLetterId()->id;
+        $updatedNewsLetterId = $this->newsLetterId()->id;
         $arrayActual = [
             'title' => 'updated',
             'message' => 'devupdated',
-            'newsLetterId' => $updatedNewLetterId
+            'newsLetterId' => $updatedNewsLetterId
         ];
 
         $message->update($arrayActual['title'], $arrayActual['message'], $arrayActual['newsLetterId']);

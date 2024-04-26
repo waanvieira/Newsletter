@@ -4,18 +4,17 @@
 
 namespace App\UseCases\NewsLetter;
 
-use App\Repositories\Eloquent\NewsLetterEloquentRepository;
+use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 
 class NewsLetterDeleteUseCase
 {
-    protected $repository;
-
-    public function __construct(NewsLetterEloquentRepository $repository)
-    {
+    public function __construct(
+        protected NewsletterEntityRepositoryInterface $repository
+    ) {
         $this->repository = $repository;
     }
 
-    public function execute(string $id)
+    public function execute(string $id): bool
     {
         return $this->repository->delete($id);
     }

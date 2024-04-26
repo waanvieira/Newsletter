@@ -54,6 +54,6 @@ class User extends Authenticatable
 
     public function newsletters()
     {
-        return $this->belongsToMany(User::class, "newletter_user", "newsletter_id", "user_id");
+        return $this->belongsToMany(User::class, "newsletter_user", "newsletter_id", "user_id");
     }
 }

@@ -21,7 +21,7 @@ class MessageControllerTest extends TestCase
     use TestResources;
     // use WithOutMiddleware;
 
-    private $newletter;
+    private $newsletter;
     private $controller;
     private $moduloPagamentoMock;
     private $message;
@@ -37,7 +37,7 @@ class MessageControllerTest extends TestCase
         $user = User::factory()->create();
         $this->user = User::where('email', $user->email)->first();
         NewsLetter::factory()->create();
-        $this->newletter = NewsLetter::orderBy('id', 'DESC')->first();
+        $this->newsletter = NewsLetter::orderBy('id', 'DESC')->first();
         Message::factory()->create();
         $this->message = $this->model()::orderBy('id', 'DESC')->first();
     }
@@ -113,12 +113,12 @@ class MessageControllerTest extends TestCase
         $users = User::factory()->count(10)->create();
         foreach ($users as $user) {
             $useremail = User::where('email', $user->email)->first();
-            $this->newletter->users()->attach([$useremail->id]);
+            $this->newsletter->users()->attach([$useremail->id]);
         }
 
         $data = [
             // 'creator_id' => $this->user->id,
-            'newsletter_id' => $this->newletter->id,
+            'newsletter_id' => $this->newsletter->id,
             'title' => 'titulo teste',
             'message' => 'mensgem teste para enviar email',
         ];
@@ -136,7 +136,7 @@ class MessageControllerTest extends TestCase
     {
         $data = [
             'creator_id' => $this->user->id,
-            'newsletter_id' => $this->newletter->id,
+            'newsletter_id' => $this->newsletter->id,
             'title' => 'titulo teste',
             'message' => 'mensgem teste para enviar email',
         ];
@@ -168,7 +168,7 @@ class MessageControllerTest extends TestCase
 
     protected function assertHasUser($userId, $nesLetterId)
     {
-        $this->assertDatabaseHas('newletter_user', [
+        $this->assertDatabaseHas('newsletter_user', [
             'user_id' => $userId,
             'newsletter_id' => $nesLetterId
         ]);

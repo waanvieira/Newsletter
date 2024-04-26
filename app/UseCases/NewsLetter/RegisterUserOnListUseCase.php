@@ -10,24 +10,21 @@ use App\Exceptions\BadRequestException;
 
 class RegisterUserOnListUseCase
 {
-    protected $repository;
-    protected $userRepository;
-
     public function __construct(
-        NewsletterEntityRepositoryInterface $repository,
-        UserEntityRepositoryInterface $userRepository
-        )
-    {
+        protected NewsletterEntityRepositoryInterface $repository,
+        protected UserEntityRepositoryInterface $userRepository
+    ) {
         $this->repository = $repository;
         $this->userRepository = $userRepository;
     }
 
-    public function execute(array $input, string $id)
+    public function execute(array $input, string $id): void
     {
         $user = $this->userRepository->findByEmail($input['email']);
         if (!$user) {
             throw new BadRequestException("Não existe usuário com esse e-mail");
         }
-        return $this->repository->registerUserOnList($id, $user->id);
+
+        $this->repository->registerUserOnList($id, $user->id);
     }
 }

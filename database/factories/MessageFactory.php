@@ -17,9 +17,9 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
-        $newletter = NewsLetter::factory()->create();
+        $newsletter = NewsLetter::factory()->create();
         return [
-            'newsletter_id' => $newletter->id,
+            'newsletter_id' => $newsletter->id,
             'title' => fake()->name(),
             'message' => fake()->text(),
         ];

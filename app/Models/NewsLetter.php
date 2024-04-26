@@ -30,11 +30,11 @@ class NewsLetter extends Model
 
     public function messages()
     {
-        // return $this->belongsToMany(Video::class);
+        return $this->belongsToMany(Message::class);
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, "newletter_user", "newsletter_id", "user_id");
+        return $this->belongsToMany(User::class, "newsletter_user", "newsletter_id", "user_id");
     }
 }

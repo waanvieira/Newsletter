@@ -9,7 +9,6 @@ use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\UseCases\DTO\Message\MessageCreateInputDto;
 use App\UseCases\DTO\Message\MessageCreateOutputDto;
 use App\UseCases\Message\MessageCreateUseCase;
-use App\UseCases\NewsLetter\NewLetterCreateUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 use stdClass;

@@ -7,8 +7,7 @@ use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Models\User;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
-use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutPutDto;
-use App\UseCases\NewsLetter\NewLetterUpdateUseCase;
+use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutputDto;
 use App\UseCases\NewsLetter\NewsLetterUpdateUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
@@ -44,7 +43,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, ['123', $name, $description, $email]);
 
         $userResponse =  $useCase->execute($mockUpdateDto);
-        $this->assertInstanceOf(NewsLetterUpdateOutPutDto::class, $userResponse);
+        $this->assertInstanceOf(NewsLetterUpdateOutputDto::class, $userResponse);
         $this->assertEquals($modelEntity->id, $userResponse->id);
         $this->assertEquals($name, $userResponse->name);
         $this->assertEquals($description, $userResponse->description);

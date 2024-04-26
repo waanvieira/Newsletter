@@ -20,8 +20,8 @@ class EmailMessageCreated
      */
     public function handle($event): void
     {
-        $newletter = NewsLetter::find($event->newsletter_id);
-        $users = $newletter->users()->get();
+        $newsletter = NewsLetter::find($event->newsletter_id);
+        $users = $newsletter->users()->get();
         foreach ($users as $key => $user) {
             Mail::to($user->email)->send(new NewsLetterMessage($user, $event));
         }

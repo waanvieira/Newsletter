@@ -9,22 +9,19 @@ use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Exceptions\BadRequestException;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
-use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutPutDto;
+use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutputDto;
 
 class NewsLetterUpdateUseCase
 {
-    protected $repository;
-    protected $userRepository;
-
     public function __construct(
-        NewsletterEntityRepositoryInterface $repository,
-        UserEntityRepositoryInterface $userRepository
+        protected NewsletterEntityRepositoryInterface $repository,
+        protected UserEntityRepositoryInterface $userRepository
     ) {
         $this->repository = $repository;
         $this->userRepository = $userRepository;
     }
 
-    public function execute(NewsLetterUpdateInputDto $input): NewsLetterUpdateOutPutDto
+    public function execute(NewsLetterUpdateInputDto $input): NewsLetterUpdateOutputDto
     {
         $newsLetter = NewsLetter::restore($input->id, $input->name, $input->description, $input->email);
         $user = $this->userRepository->findByEmail($input->email ?? '');
@@ -37,7 +34,7 @@ class NewsLetterUpdateUseCase
         $newsLetter->update($input->name, $input->description);
         $response = $this->repository->update($newsLetter);
 
-        return new NewsLetterUpdateOutPutDto(
+        return new NewsLetterUpdateOutputDto(
             id: $response->id,
             name: $response->name,
             description: $response->description,

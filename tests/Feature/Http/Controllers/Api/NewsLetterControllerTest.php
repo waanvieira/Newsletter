@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\NewLetterController;
+use App\Http\Controllers\Api\NewsLetterController;
 use App\Models\NewsLetter;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,9 +11,6 @@ use Tests\TestCase;
 use Tests\Traits\TestResources;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
-
-use function PHPUnit\Framework\assertEquals;
-
 class NewsLetterControllerTest extends TestCase
 {
     use DatabaseTransactions;
@@ -22,7 +19,7 @@ class NewsLetterControllerTest extends TestCase
     use TestResources;
     // use WithOutMiddleware;
 
-    private $newletter;
+    private $newsletter;
     private $controller;
     private $moduloPagamentoMock;
     private $paymentMock;
@@ -39,7 +36,7 @@ class NewsLetterControllerTest extends TestCase
         $fakeUser = NewsLetter::factory()->create();
         $user = User::factory()->create();
         $this->user = User::where('email', $user->email)->first();
-        $this->newletter = $this->model()::orderBy('id', 'DESC')->first();
+        $this->newsletter = $this->model()::orderBy('id', 'DESC')->first();
     }
 
     private $serializedFields = [
@@ -77,7 +74,7 @@ class NewsLetterControllerTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->get(route('newsletter.show', ['newsletter' => $this->newletter->id]));
+        $response = $this->get(route('newsletter.show', ['newsletter' => $this->newsletter->id]));
         $response
             ->assertStatus(200);
         // ->assertJsonStructure([
@@ -165,16 +162,16 @@ class NewsLetterControllerTest extends TestCase
         $data = [
             "email" => $this->user->email,
         ];
-        $response = $this->put(route('newsletter.link_user', ['id' => $this->newletter->id]), $data);
+        $response = $this->put(route('newsletter.link_user', ['id' => $this->newsletter->id]), $data);
         $response->assertStatus(Response::HTTP_OK);
-        $this->assertHasUser($this->user->id, $this->newletter->id);
+        $this->assertHasUser($this->user->id, $this->newsletter->id);
     }
 
     public function testDestroy()
     {
-        $response = $this->json('DELETE', route('newsletter.destroy', ['newsletter' => $this->newletter->id]));
+        $response = $this->json('DELETE', route('newsletter.destroy', ['newsletter' => $this->newsletter->id]));
         $response->assertStatus(204);
-        $userExcluded = $this->model()::where('id', $this->newletter->id)->first();
+        $userExcluded = $this->model()::where('id', $this->newsletter->id)->first();
         $this->assertNull($userExcluded);
     }
 
@@ -185,12 +182,12 @@ class NewsLetterControllerTest extends TestCase
 
     public function routeUpdate()
     {
-        return route('newsletter.update', ['newsletter' => $this->newletter->id]);
+        return route('newsletter.update', ['newsletter' => $this->newsletter->id]);
     }
 
     protected function assertHasUser($userId, $nesLetterId)
     {
-        $this->assertDatabaseHas('newletter_user', [
+        $this->assertDatabaseHas('newsletter_user', [
             'user_id' => $userId,
             'newsletter_id' => $nesLetterId
         ]);

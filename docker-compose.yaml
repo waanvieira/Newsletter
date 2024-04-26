@@ -3,7 +3,7 @@ services:
   app:
     build: .
     container_name: app
-    entrypoint: "sh .entrypoint.sh"
+    # entrypoint: "sh .entrypoint.sh"
     volumes:
       - ./:/var/www
     depends_on:

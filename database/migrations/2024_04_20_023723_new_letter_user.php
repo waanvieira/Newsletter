@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('newletter_user', function (Blueprint $table) {
+        Schema::create('newsletter_user', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('newletter_user');
+        Schema::dropIfExists('newsletter_user');
     }
 };

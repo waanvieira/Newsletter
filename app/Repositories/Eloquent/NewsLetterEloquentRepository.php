@@ -73,12 +73,12 @@ class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterfac
         return $newsLetterDb->delete();
     }
 
-    public function registerUserOnList(string $idNewLetter, string $idUser) : void
+    public function registerUserOnList(string $newsLetterId, string $idUser) : void
     {
-        $newLetter = $this->model->find($idNewLetter);
+        $newsletter = $this->model->find($newsLetterId);
 
-        if (!$newLetter->users->where('id', $idUser)->first()) {
-            $newLetter->users()->attach($idUser);
+        if (!$newsletter->users->where('id', $idUser)->first()) {
+            $newsletter->users()->attach($idUser);
         }
     }
 
