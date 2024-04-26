@@ -8,7 +8,8 @@ use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Models\User;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutPutDto;
-use App\UseCases\NewLetter\NewLetterUpdateUseCase;
+use App\UseCases\NewsLetter\NewLetterUpdateUseCase;
+use App\UseCases\NewsLetter\NewsLetterUpdateUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 use stdClass;
@@ -16,7 +17,7 @@ use stdClass;
 //Testes unitarios
 class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
 {
-    public function testUpdateNewNewsLetter()
+    public function testUpdateNewsLetter()
     {
         $name = 'usuario teste2';
         $description = 'description';
@@ -39,7 +40,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         $userRespositoty = Mockery::mock(stdClass::class, UserEntityRepositoryInterface::class);
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
-        $useCase = new NewLetterUpdateUseCase($repositoyMock, $userRespositoty);
+        $useCase = new NewsLetterUpdateUseCase($repositoyMock, $userRespositoty);
         $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, ['123', $name, $description, $email]);
 
         $userResponse =  $useCase->execute($mockUpdateDto);
@@ -50,7 +51,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         Mockery::close();
     }
 
-    public function testUpdateNewNewsLetterSpie()
+    public function testUpdateNewsLetterSpie()
     {
         $name = 'usuario teste2';
         $description = 'description';
@@ -69,7 +70,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         $userRespositoty = Mockery::mock(stdClass::class, UserEntityRepositoryInterface::class);
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
-        $useCase = new NewLetterUpdateUseCase($repositoyMock, $userRespositoty);
+        $useCase = new NewsLetterUpdateUseCase($repositoyMock, $userRespositoty);
         $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, ['123', $name, $description, $email]);
         $useCase->execute($mockUpdateDto);
         $userRespositoty->shouldHaveReceived('findByEmail');

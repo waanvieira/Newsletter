@@ -8,14 +8,13 @@ use App\Domain\Repositories\MessageEntityRepositoryInterface;
 
 class MessageDeleteUseCase
 {
-    protected $repository;
-
-    public function __construct(MessageEntityRepositoryInterface $repository)
-    {
+    public function __construct(
+        protected MessageEntityRepositoryInterface $repository
+    ) {
         $this->repository = $repository;
     }
 
-    public function execute(string $id)
+    public function execute(string $id): bool
     {
         return $this->repository->delete($id);
     }

@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class NewsLetterEntityTest extends TestCase
 {
-
     public function testAttributesCreate()
     {
         $newsletter = NewsLetter::create(

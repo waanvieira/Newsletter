@@ -14,7 +14,7 @@ use Tests\Traits\TestValidations;
 
 use function PHPUnit\Framework\assertEquals;
 
-class NewLetterControllerTest extends TestCase
+class NewsLetterControllerTest extends TestCase
 {
     use DatabaseTransactions;
     use TestValidations;
@@ -192,7 +192,7 @@ class NewLetterControllerTest extends TestCase
     {
         $this->assertDatabaseHas('newletter_user', [
             'user_id' => $userId,
-            'newletter_id' => $nesLetterId
+            'newsletter_id' => $nesLetterId
         ]);
     }
 
@@ -204,6 +204,6 @@ class NewLetterControllerTest extends TestCase
 
     public function controller()
     {
-        return new NewLetterController();
+        return new NewsLetterController();
     }
 }

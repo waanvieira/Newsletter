@@ -17,5 +17,5 @@ interface NewsletterEntityRepositoryInterface
 
     public function delete(string $NewsLetterId): bool;
 
-    public function RegisterUserOnList(string $idNewLetter, string $idUser): void;
+    public function RegisterUserOnList(string $newsLetterId, string $idUser): void;
 }

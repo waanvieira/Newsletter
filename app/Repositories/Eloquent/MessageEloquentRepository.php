@@ -2,23 +2,55 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Domain\Entities\Message;
 use App\Domain\Repositories\MessageEntityRepositoryInterface;
-use App\Exceptions\NotFoundException;
-use App\Models\Message;
+use App\Models\Message as MessageModel;
 use Illuminate\Database\Eloquent\Model;
 
-class MessageEloquentRepository extends AbstractBaseCrudRepository implements MessageEntityRepositoryInterface
+class MessageEloquentRepository extends AbstractDtoModelRepository implements MessageEntityRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Message $model)
+    public function __construct(MessageModel $model)
     {
         $this->model = $model;
     }
 
-    public function model(): Model
+    public function insert(Message $message): Message
     {
-        return $this->model;
+        $dataDb = $this->model->create([
+            'id' => $message->id,
+            'newsletter_id' => $message->newsLetterId,
+            'title' => $message->title,
+            'message' => $message->message,
+            'created_at' => $message->createdAt,
+        ]);
+
+        return $this->convertToEntity($dataDb);
+    }
+
+    public function delete(string $id): bool
+    {
+        $messageDb = $this->model->findOrFail($id);
+        return $messageDb->delete();
+    }
+
+    public function findById(string $id): Message
+    {
+        $dataDb = $this->model->findOrFail($id);
+        return $this->convertToEntity($dataDb);
+    }
+
+    public function update(Message $message): Message
+    {
+        $messageDb = $this->model->findOrFail($message->id);
+        $messageDb->update([
+            'title' => $message->title,
+            'message' => $message->message,
+            'newsLetterId' => $message->newsLetterId,
+        ]);
+        $messageDb->refresh();
+        return $this->convertToEntity($messageDb);
     }
 
     public function getAll(string $filter = '', $order = 'DESC'): array
@@ -47,13 +79,19 @@ class MessageEloquentRepository extends AbstractBaseCrudRepository implements Me
         return $dataDb;
     }
 
-    public function getAllByNesLetter(string $id)
+    public function model(): Model
     {
-        $reseponse = $this->model->where('newsletter_id', $id)->get();
-        if (!$reseponse) {
-            throw new NotFoundException('Nenhuma mensagem encontrada para essa lista');
-        }
+        return $this->model;
+    }
 
-        return $reseponse;
+    private function convertToEntity(MessageModel $model): Message
+    {
+        return Message::restore(
+            id: $model->id,
+            title: $model->title,
+            message: $model->message,
+            newsLetterId: $model->newsletter_id,
+            createdAt: $model->created_at
+        );
     }
 }

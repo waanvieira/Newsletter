@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('user', UserController::class);
-Route::resource('newsletter', NewLetterController::class);
+Route::resource('newsletter',NewsLetterController::class);
 Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
     Route::put('link_user/{id}', [NewLetterController::class,'registerUserOnTheList'])->name('link_user');
 });

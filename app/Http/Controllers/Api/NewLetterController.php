@@ -3,27 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NewLetterRequest;
+use App\Http\Requests\NewsLetterRequest;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateInputDto;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
-use App\UseCases\NewLetter\NewLetterCreateUseCase;
-use App\UseCases\NewLetter\NewLetterDeleteUseCase;
-use App\UseCases\NewLetter\NewLetterFindByIdUseCase;
-use App\UseCases\NewLetter\NewLetterGetAllUseCase;
-use App\UseCases\NewLetter\NewLetterUpdateUseCase;
-use App\UseCases\NewLetter\RegisterUserOnListUseCase;
+use App\UseCases\NewsLetter\{
+    NewsLetterCreateUseCase,
+    NewsLetterDeleteUseCase,
+    NewsLetterFindByIdUseCase,
+    NewsLetterGetAllUseCase,
+    NewsLetterUpdateUseCase,
+    RegisterUserOnListUseCase
+};
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class NewLetterController extends Controller
+class NewsLetterController extends Controller
 {
-    public function index(Request $request, NewLetterGetAllUseCase $useCase)
+    public function index(Request $request, NewsLetterGetAllUseCase $useCase)
     {
         $response = $useCase->execute($request->all());
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function store(NewLetterRequest $request, NewLetterCreateUseCase $useCase)
+    public function store(NewsLetterRequest $request, NewsLetterCreateUseCase $useCase)
     {
         $inputDto = new NewsLetterCreateInputDto(
             $request->name,
@@ -34,13 +36,13 @@ class NewLetterController extends Controller
         return response()->json(['data' => $response], Response::HTTP_CREATED);
     }
 
-    public function show(String $id, NewLetterFindByIdUseCase $useCase)
+    public function show(String $id, NewsLetterFindByIdUseCase $useCase)
     {
         $response = $useCase->execute($id);
         return response()->json(['data' => $response], Response::HTTP_OK);
     }
 
-    public function update(NewLetterRequest $request, string $id, NewLetterUpdateUseCase $useCase)
+    public function update(NewsLetterRequest $request, string $id, NewsLetterUpdateUseCase $useCase)
     {
         $inputDto = new NewsLetterUpdateInputDto(
             $id,
@@ -52,7 +54,7 @@ class NewLetterController extends Controller
         return response()->json(['data' => $response], Response::HTTP_OK);
     }
 
-    public function destroy(string $id, NewLetterDeleteUseCase $useCase)
+    public function destroy(string $id, NewsLetterDeleteUseCase $useCase)
     {
         $useCase->execute($id);
         return response()->json([], Response::HTTP_NO_CONTENT);

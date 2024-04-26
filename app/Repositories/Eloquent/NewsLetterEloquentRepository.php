@@ -7,7 +7,7 @@ use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Models\NewsLetter;
 use Illuminate\Database\Eloquent\Model;
 
-class NewLetterEloquentRepository implements NewsletterEntityRepositoryInterface
+class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterface
 {
     protected $model;
 

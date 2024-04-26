@@ -35,6 +35,6 @@ class NewsLetter extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, "newletter_user", "newletter_id", "user_id");
+        return $this->belongsToMany(User::class, "newletter_user", "newsletter_id", "user_id");
     }
 }

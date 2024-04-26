@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
+use App\UseCases\DTO\Message\MessageCreateInputDto;
+use App\UseCases\DTO\Message\MessageUpdateInputDto;
 use App\UseCases\Message\MessageCreateUseCase;
 use App\UseCases\Message\MessageDeleteUseCase;
 use App\UseCases\Message\MessageFindByIDUseCase;
@@ -22,7 +24,12 @@ class MessageController extends Controller
 
     public function store(MessageRequest $request, MessageCreateUseCase $useCase)
     {
-        $response = $useCase->execute($request->all());
+        $input = new MessageCreateInputDto(
+            title: $request->title,
+            message: $request->message,
+            newsLetterId: $request->newsletter_id,
+        );
+        $response = $useCase->execute($input);
         return response()->json(['data' => $response], Response::HTTP_CREATED);
     }
 
@@ -34,7 +41,13 @@ class MessageController extends Controller
 
     public function update(MessageRequest $request, string $id, MessageUpdateUseCase $useCase)
     {
-        $response = $useCase->execute($request->all(), $id);
+        $input = new MessageUpdateInputDto(
+            id: $id,
+            title: $request->title,
+            message: $request->message,
+            newsLetterId: $request->newsletter_id,
+        );
+        $response = $useCase->execute($input, $id);
         return response()->json(['data' => $response], Response::HTTP_OK);
     }
 

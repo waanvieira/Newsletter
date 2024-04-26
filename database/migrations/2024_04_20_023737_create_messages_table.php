@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             // $table->uuid('creator_id');
-            $table->uuid('newletter_id')->index();
-            $table->foreign('newletter_id')->references('id')->on('news_letters');
+            $table->uuid('newsletter_id')->index();
+            $table->foreign('newsletter_id')->references('id')->on('news_letters');
             $table->string('title');
             $table->text('message');
             $table->timestamps();

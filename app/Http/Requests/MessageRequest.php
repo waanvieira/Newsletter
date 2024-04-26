@@ -19,13 +19,13 @@ class MessageRequest extends FormRequest
         switch ($this->getMethod()) {
             case 'POST':
                 return [
-                    'newletter_id' => 'required',
+                    'newsletter_id' => 'required',
                     'title' => 'required',
                     'message' => 'required',
                 ];
             case 'PUT':
                 return [
-                    'newletter_id' => 'required',
+                    'newsletter_id' => 'required',
                     'title' => 'required',
                     'message' => 'required',
                 ];

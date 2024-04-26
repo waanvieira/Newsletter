@@ -2,15 +2,15 @@
 
 // declare(strict_types=1);
 
-namespace App\UseCases\NewLetter;
+namespace App\UseCases\NewsLetter;
 
-use App\Repositories\Eloquent\NewLetterEloquentRepository;
+use App\Repositories\Eloquent\NewsLetterEloquentRepository;
 
-class NewLetterDeleteUseCase
+class NewsLetterDeleteUseCase
 {
     protected $repository;
 
-    public function __construct(NewLetterEloquentRepository $repository)
+    public function __construct(NewsLetterEloquentRepository $repository)
     {
         $this->repository = $repository;
     }

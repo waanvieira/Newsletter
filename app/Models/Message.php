@@ -15,7 +15,7 @@ class Message extends Model
 
     protected $fillable = [
         'id',
-        'newletter_id',
+        'newsletter_id',
         'title',
         'message',
     ];
@@ -24,7 +24,7 @@ class Message extends Model
 
     protected $casts = [
         'id' => 'string',
-        'newletter_id' => 'string',
+        'newsletter_id' => 'string',
         'title' => 'string',
         'message' => 'string',
         'created_at' => 'datetime',

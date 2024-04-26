@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Entities;
 
 use App\Traits\MethodsMagicsTrait;
-use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
 class NewsLetter

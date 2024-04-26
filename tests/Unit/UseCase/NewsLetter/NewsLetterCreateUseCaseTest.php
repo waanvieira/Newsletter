@@ -8,7 +8,7 @@ use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Models\User;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateInputDto;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateOutputDto;
-use App\UseCases\NewLetter\NewLetterCreateUseCase;
+use App\UseCases\NewsLetter\NewsLetterCreateUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 use stdClass;
@@ -16,7 +16,7 @@ use stdClass;
 //Testes unitarios
 class NewsLetterCreateUseCaseTest extends FrameworkTestCase
 {
-    public function testCreateNewNewsLetter()
+    public function testCreateNewsLetter()
     {
         $name = 'usuario teste2';
         $description = 'email@dev.com.br';
@@ -34,7 +34,7 @@ class NewsLetterCreateUseCaseTest extends FrameworkTestCase
         $userRespositoty = Mockery::mock(stdClass::class, UserEntityRepositoryInterface::class);
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
-        $useCase = new NewLetterCreateUseCase($repositoyMock, $userRespositoty);
+        $useCase = new NewsLetterCreateUseCase($repositoyMock, $userRespositoty);
         $mockInputDto = Mockery::mock(NewsLetterCreateInputDto::class, [$name, $description, $email]);
 
         $userResponse =  $useCase->execute($mockInputDto);
@@ -45,7 +45,7 @@ class NewsLetterCreateUseCaseTest extends FrameworkTestCase
         Mockery::close();
     }
 
-    public function testCreateNewNewsLetterSpie()
+    public function testCreatenNewsLetterSpie()
     {
         $name = 'usuario teste2';
         $description = 'email@dev.com.br';
@@ -63,7 +63,7 @@ class NewsLetterCreateUseCaseTest extends FrameworkTestCase
         $userRespositoty = Mockery::mock(stdClass::class, UserEntityRepositoryInterface::class);
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
-        $useCase = new NewLetterCreateUseCase($repositoyMock, $userRespositoty);
+        $useCase = new NewsLetterCreateUseCase($repositoyMock, $userRespositoty);
         $mockInputDto = Mockery::mock(NewsLetterCreateInputDto::class, [$name, $description, $email]);
 
         $userResponse =  $useCase->execute($mockInputDto);

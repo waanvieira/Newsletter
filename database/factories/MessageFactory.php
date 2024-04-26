@@ -19,7 +19,7 @@ class MessageFactory extends Factory
     {
         $newletter = NewsLetter::factory()->create();
         return [
-            'newletter_id' => $newletter->id,
+            'newsletter_id' => $newletter->id,
             'title' => fake()->name(),
             'message' => fake()->text(),
         ];

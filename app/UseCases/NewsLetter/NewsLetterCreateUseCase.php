@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCases\NewLetter;
+namespace App\UseCases\NewsLetter;
 
 use App\Domain\Entities\NewsLetter;
 use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
@@ -11,7 +11,7 @@ use App\Exceptions\BadRequestException;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateInputDto;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateOutPutDto;
 
-class NewLetterCreateUseCase
+class NewsLetterCreateUseCase
 {
     protected $repository;
     protected $userEloquentRepository;

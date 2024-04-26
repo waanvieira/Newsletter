@@ -13,8 +13,6 @@ use Tests\Traits\TestResources;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
 
-use function PHPUnit\Framework\assertEquals;
-
 class MessageControllerTest extends TestCase
 {
     use DatabaseTransactions;
@@ -46,8 +44,7 @@ class MessageControllerTest extends TestCase
 
     private $serializedFields = [
         'id',
-        // 'creator_id',
-        'newletter_id',
+        'newsletter_id',
         'title',
         'message',
         'created_at',
@@ -86,8 +83,7 @@ class MessageControllerTest extends TestCase
     public function testAssertInvalidationStore()
     {
         $data = [
-            // 'creator_id' => null,
-            'newletter_id' => null,
+            'newsletter_id' => null,
             'title' => null,
             'message' => null,
         ];
@@ -99,7 +95,7 @@ class MessageControllerTest extends TestCase
     {
         $data = [
             // 'creator_id' => null,
-            'newletter_id' => null,
+            'newsletter_id' => null,
             'title' => null,
             'message' => null,
         ];
@@ -122,7 +118,7 @@ class MessageControllerTest extends TestCase
 
         $data = [
             // 'creator_id' => $this->user->id,
-            'newletter_id' => $this->newletter->id,
+            'newsletter_id' => $this->newletter->id,
             'title' => 'titulo teste',
             'message' => 'mensgem teste para enviar email',
         ];
@@ -140,7 +136,7 @@ class MessageControllerTest extends TestCase
     {
         $data = [
             'creator_id' => $this->user->id,
-            'newletter_id' => $this->newletter->id,
+            'newsletter_id' => $this->newletter->id,
             'title' => 'titulo teste',
             'message' => 'mensgem teste para enviar email',
         ];
@@ -174,7 +170,7 @@ class MessageControllerTest extends TestCase
     {
         $this->assertDatabaseHas('newletter_user', [
             'user_id' => $userId,
-            'newletter_id' => $nesLetterId
+            'newsletter_id' => $nesLetterId
         ]);
     }
 

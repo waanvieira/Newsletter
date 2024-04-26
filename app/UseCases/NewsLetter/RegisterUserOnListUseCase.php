@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCases\NewLetter;
+namespace App\UseCases\NewsLetter;
 
 use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
