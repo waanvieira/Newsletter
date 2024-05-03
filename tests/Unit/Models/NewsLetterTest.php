@@ -83,7 +83,7 @@ class NewsLetterTest extends TestCase
     public function traitsNeed() : array
     {
         return [
-            \App\Traits\UuidTrait::class,
+            // \App\Traits\UuidTrait::class,
             SoftDeletes::class,
             HasFactory::class
         ];

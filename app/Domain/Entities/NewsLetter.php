@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace App\Domain\Entities;
 
+use App\Domain\ValueObjects\Uuid;
 use App\Traits\MethodsMagicsTrait;
-use Ramsey\Uuid\Uuid;
+use DateTime;
+use Ramsey\Uuid\Uuid as Ramsey;
 
 class NewsLetter
 {
     use MethodsMagicsTrait;
 
     private function __construct(
-        protected ?string $id,
+        protected Uuid|string $id,
         protected string $name,
         protected string $description,
-        protected string $createdAt = '',
+        protected DateTime|string $createdAt = '',
     ) {
     }
 
     public static function create(string $name, string $description): self
     {
-        $id = Uuid::uuid4()->toString();
-        $dateNow = date('Y-m-d H:m:s');
         return new self(
-            id: $id,
+            id: Uuid::random(),
             name: $name,
             description: $description,
-            createdAt: $dateNow
+            createdAt: date('Y-m-d H:i:s')
         );
     }
 
-    public static function restore(?string $id, string $name, string $description, string $createdAt = ''): self
+    public static function restore(string $id, string $name, string $description, string $createdAt = ''): self
     {
         return new self(
-            id: $id,
+            id: new Uuid($id),
             name: $name,
             description: $description,
             createdAt: $createdAt

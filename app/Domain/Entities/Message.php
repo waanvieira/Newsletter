@@ -23,7 +23,7 @@ class Message
     public static function create(string $title, string $message, string $newsLetterId): self
     {
         $id = Uuid::uuid4()->toString();
-        $dateNow = date('Y-m-d H:m:s');
+        $dateNow = date('Y-m-d H:i:s');
         return new self(
             id: $id,
             title: $title,

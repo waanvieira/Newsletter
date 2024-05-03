@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\UseCases\NewsLetter;
 
 use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
-use App\Models\NewsLetter;
-use App\Repositories\Eloquent\NewsLetterEloquentRepository;
 
 class NewsLetterGetAllUseCase
 {
@@ -16,8 +14,8 @@ class NewsLetterGetAllUseCase
         $this->repository = $repository;
     }
 
-    public function execute(array $input)
+    public function execute(array $input = []) : array
     {
-        return $this->repository->getAllPaginate();
+        return $this->repository->getAll();
     }
 }

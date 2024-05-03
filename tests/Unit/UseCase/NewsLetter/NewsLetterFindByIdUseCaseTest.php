@@ -8,13 +8,15 @@ use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutputDto;
 use App\UseCases\NewsLetter\NewsLetterFindByIdUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
+use Ramsey\Uuid\Uuid;
 use stdClass;
 
 class NewsLetterFindByIdUseCaseTest extends FrameworkTestCase
 {
     public function testFindByIdUseCase()
     {
-        $modelEntity = $this->newsLetter();
+        $id = Uuid::uuid4()->toString();
+        $modelEntity = NewsLetter::restore($id, 'name', 'description', date('Y-m-d h:i:s'));
         $repositoyMock = Mockery::mock(stdClass::class, NewsletterEntityRepositoryInterface::class);
         $repositoyMock->shouldReceive('findById')->andReturn($modelEntity);
         $useCase = new NewsLetterFindByIdUseCase($repositoyMock);

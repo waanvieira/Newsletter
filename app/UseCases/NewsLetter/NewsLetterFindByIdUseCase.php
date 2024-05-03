@@ -17,12 +17,13 @@ class NewsLetterFindByIdUseCase
 
     public function execute(string $id) : NewsLetterUpdateOutputDto
     {
-        $newsLetterDb = $this->repository->findById($id);
+        $newsLetter = $this->repository->findById($id);
+
         return new NewsLetterUpdateOutputDto(
-            id: $newsLetterDb->id,
-            name: $newsLetterDb->name,
-            description: $newsLetterDb->description,
-            created_at: $newsLetterDb->createdAt
+            id: $newsLetter->id(),
+            name: $newsLetter->name,
+            description: $newsLetter->description,
+            created_at: $newsLetter->createdAt,
         );
     }
 }

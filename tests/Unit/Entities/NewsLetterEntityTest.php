@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Domain\Entities\NewsLetter;
+use App\Domain\ValueObjects\Uuid as ValueObjectsUuid;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -17,12 +18,12 @@ class NewsLetterEntityTest extends TestCase
 
         $this->assertEquals('name', $newsletter->name);
         $this->assertEquals('description', $newsletter->description);
-        $this->assertEquals(date('Y-m-d H:m:s'), $newsletter->createdAt);
+        $this->assertEquals(date('Y-m-d H:i:s'), $newsletter->createdAt);
     }
 
     public function testAttributesRestore()
     {
-        $id = Uuid::uuid4()->toString();
+        $id = ValueObjectsUuid::random();
         $newsletter = NewsLetter::restore(
             id: $id,
             name: 'name',
@@ -37,7 +38,7 @@ class NewsLetterEntityTest extends TestCase
 
     public function testUpdateName()
     {
-        $id = Uuid::uuid4()->toString();
+        $id = ValueObjectsUuid::random();
         $newsletter = NewsLetter::restore(
             id: $id,
             name: 'name',
@@ -58,7 +59,7 @@ class NewsLetterEntityTest extends TestCase
 
     public function testFromArray()
     {
-        $id = Uuid::uuid4()->toString();
+        $id = ValueObjectsUuid::random();
         $arrayGenerate = [
             'id' => $id,
             'name' => 'name',

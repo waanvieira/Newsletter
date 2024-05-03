@@ -35,7 +35,7 @@ class NewsLetterUpdateUseCase
         $response = $this->repository->update($newsLetter);
 
         return new NewsLetterUpdateOutputDto(
-            id: $response->id,
+            id: $response->id(),
             name: $response->name,
             description: $response->description,
             created_at: $response->createdAt,

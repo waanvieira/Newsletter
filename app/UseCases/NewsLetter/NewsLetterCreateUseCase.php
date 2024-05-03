@@ -9,7 +9,7 @@ use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
 use App\Exceptions\BadRequestException;
 use App\UseCases\DTO\NewsLetter\NewsLetterCreateInputDto;
-use App\UseCases\DTO\NewsLetter\NewsLetterCreateOutPutDto;
+use App\UseCases\DTO\NewsLetter\NewsLetterCreateOutputDto;
 
 class NewsLetterCreateUseCase
 {
@@ -24,7 +24,7 @@ class NewsLetterCreateUseCase
         $this->userEloquentRepository = $userEloquentRepository;
     }
 
-    public function execute(NewsLetterCreateInputDto $input) : NewsLetterCreateOutPutDto
+    public function execute(NewsLetterCreateInputDto $input) : NewsLetterCreateOutputDto
     {
         $user = $this->userEloquentRepository->findByEmail($input->email?? '');
 
@@ -39,11 +39,11 @@ class NewsLetterCreateUseCase
 
         $response = $this->repository->insert($newsLetter);
 
-        return new NewsLetterCreateOutPutDto(
-            id: $response->id,
+        return new NewsLetterCreateOutputDto(
+            id: $response->id(),
             name: $response->name,
             description: $response->description,
-            createdAt: $response->createdAt
+            created_at: $response->createdAt
         );
     }
 }

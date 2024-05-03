@@ -28,7 +28,7 @@ class MessageEntityTest extends TestCase
         $this->assertEquals('title', $message->title);
         $this->assertEquals('message', $message->message);
         $this->assertEquals($this->newsLetterId, $message->newsLetterId);
-        $this->assertEquals(date('Y-m-d H:m:s'), $message->createdAt);
+        $this->assertEquals(date('Y-m-d H:i:s'), $message->createdAt);
     }
 
     public function testAttributesRestore()

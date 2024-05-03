@@ -22,11 +22,13 @@ class NewsLetterCreateUseCaseTest extends FrameworkTestCase
         $description = 'email@dev.com.br';
         $email = 'email@dev.com.br';
         $modelEntity = NewsLetter::create($name, $description);
+
         $userData = [
             'name' => $name,
             'email' => $email,
             'is_admin' => true,
         ];
+
         $modelUser = (new User($userData));
         $repositoyMock = Mockery::mock(stdClass::class, NewsletterEntityRepositoryInterface::class);
         $repositoyMock->shouldReceive('insert')->andReturn($modelEntity);
@@ -36,12 +38,12 @@ class NewsLetterCreateUseCaseTest extends FrameworkTestCase
 
         $useCase = new NewsLetterCreateUseCase($repositoyMock, $userRespositoty);
         $mockInputDto = Mockery::mock(NewsLetterCreateInputDto::class, [$name, $description, $email]);
-
         $userResponse =  $useCase->execute($mockInputDto);
         $this->assertInstanceOf(NewsLetterCreateOutputDto::class, $userResponse);
         $this->assertEquals($modelEntity->id, $userResponse->id);
         $this->assertEquals($name, $userResponse->name);
         $this->assertEquals($description, $userResponse->description);
+        $this->assertNotNull($userResponse->created_at);
         Mockery::close();
     }
 

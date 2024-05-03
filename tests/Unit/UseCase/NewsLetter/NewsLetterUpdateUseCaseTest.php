@@ -5,10 +5,12 @@ namespace Tests\Unit\UseCase;
 use App\Domain\Entities\NewsLetter;
 use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
 use App\Domain\Repositories\UserEntityRepositoryInterface;
+use App\Domain\ValueObjects\Uuid;
 use App\Models\User;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateInputDto;
 use App\UseCases\DTO\NewsLetter\NewsLetterUpdateOutputDto;
 use App\UseCases\NewsLetter\NewsLetterUpdateUseCase;
+use DateTime;
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 use stdClass;
@@ -18,11 +20,12 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
 {
     public function testUpdateNewsLetter()
     {
+        $id = Uuid::random();
         $name = 'usuario teste2';
         $description = 'description';
         $email = 'email@dev.com.br';
-        $modelEntity = NewsLetter::restore('123', $name, $description);
-        // $modelEntity = NewsLetter::restore('123', $name, $description);
+        $modelEntity = NewsLetter::restore($id, $name, $description, date('Y-m-d H:m:s'));
+        // $modelEntity = NewsLetter::restore($id, $name, $description);
         // $modelEntity = Mockery::mock('alias:'.NewsLetter::class);
         // $modelEntity->shouldReceive('create')->andReturn(
         $userData = [
@@ -40,7 +43,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
         $useCase = new NewsLetterUpdateUseCase($repositoyMock, $userRespositoty);
-        $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, ['123', $name, $description, $email]);
+        $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, [$id, $name, $description, $email]);
 
         $userResponse =  $useCase->execute($mockUpdateDto);
         $this->assertInstanceOf(NewsLetterUpdateOutputDto::class, $userResponse);
@@ -52,10 +55,11 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
 
     public function testUpdateNewsLetterSpie()
     {
+        $id = Uuid::random();
         $name = 'usuario teste2';
         $description = 'description';
         $email = 'email@dev.com.br';
-        $modelEntity = NewsLetter::restore('123', $name, $description);
+        $modelEntity = NewsLetter::restore($id, $name, $description);
         $userData = [
             'name' => $name,
             'email' => $email,
@@ -70,7 +74,7 @@ class NewsLetterUpdateUseCaseTest extends FrameworkTestCase
         $userRespositoty->shouldReceive('findByEmail')->andReturn($modelUser);
 
         $useCase = new NewsLetterUpdateUseCase($repositoyMock, $userRespositoty);
-        $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, ['123', $name, $description, $email]);
+        $mockUpdateDto = Mockery::mock(NewsLetterUpdateInputDto::class, [$id, $name, $description, $email]);
         $useCase->execute($mockUpdateDto);
         $userRespositoty->shouldHaveReceived('findByEmail');
         $repositoyMock->shouldHaveReceived('findById');

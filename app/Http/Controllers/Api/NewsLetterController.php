@@ -10,7 +10,7 @@ use App\UseCases\NewsLetter\{
     NewsLetterCreateUseCase,
     NewsLetterDeleteUseCase,
     NewsLetterFindByIdUseCase,
-    NewsLetterGetAllUseCase,
+    NewsLetterGetAllPaginateUseCase,
     NewsLetterUpdateUseCase,
     RegisterUserOnListUseCase
 };
@@ -19,7 +19,7 @@ use Illuminate\Http\Response;
 
 class NewsLetterController extends Controller
 {
-    public function index(Request $request, NewsLetterGetAllUseCase $useCase)
+    public function index(Request $request, NewsLetterGetAllPaginateUseCase $useCase)
     {
         $response = $useCase->execute($request->all());
         return response()->json($response, Response::HTTP_OK);

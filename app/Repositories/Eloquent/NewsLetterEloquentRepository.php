@@ -2,16 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Domain\Entities\NewsLetter as EntitiesNewsLetter;
+use App\Domain\Entities\NewsLetter;
 use App\Domain\Repositories\NewsletterEntityRepositoryInterface;
-use App\Models\NewsLetter;
+use App\Domain\ValueObjects\Uuid;
+use App\Models\NewsLetter as NewsLetterModel;
 use Illuminate\Database\Eloquent\Model;
 
 class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterface
 {
     protected $model;
 
-    public function __construct(NewsLetter $model)
+    public function __construct(NewsLetterModel $model)
     {
         $this->model = $model;
     }
@@ -21,7 +22,7 @@ class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterfac
         return $this->model;
     }
 
-    public function insert(EntitiesNewsLetter $newsLetter): EntitiesNewsLetter
+    public function insert(NewsLetter $newsLetter): NewsLetter
     {
         $dataDb = $this->model->create([
             'id' => $newsLetter->id,
@@ -33,7 +34,7 @@ class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterfac
         return $this->convertToEntity($dataDb);
     }
 
-    public function findById(string $NewsLetterId): EntitiesNewsLetter
+    public function findById(string $NewsLetterId): NewsLetter
     {
         $dataDb =  $this->model()->findOrFail($NewsLetterId);
         return $this->convertToEntity($dataDb);
@@ -47,16 +48,20 @@ class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterfac
         }
         $query = $query->orderBy('name', $order);
         $dataDb = $query->paginate($totalPage);
-
         return $dataDb;
     }
 
     public function getAll(string $filter = '', $order = 'DESC'): array
     {
-        return [];
+        $query = $this->model;
+        if ($filter) {
+            $query = $query->where('name', 'LIKE', "%{$filter}%");
+        }
+        $query = $query->orderBy('name', $order);
+        return $query->all()->toArray();
     }
 
-    public function update(EntitiesNewsLetter $newsLetter): EntitiesNewsLetter
+    public function update(NewsLetter $newsLetter): NewsLetter
     {
         $newsLetterDb = $this->model->findOrFail($newsLetter->id);
         $newsLetterDb->update([
@@ -82,10 +87,10 @@ class NewsLetterEloquentRepository implements NewsletterEntityRepositoryInterfac
         }
     }
 
-    private function convertToEntity(NewsLetter $model): EntitiesNewsLetter
+    private function convertToEntity(NewsLetterModel $model): NewsLetter
     {
-        return EntitiesNewsLetter::restore(
-            id: $model->id,
+        return NewsLetter::restore(
+            id: new Uuid($model->id),
             name: $model->name,
             description: $model->description,
             createdAt: $model->created_at
